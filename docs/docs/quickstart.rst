@@ -94,7 +94,11 @@ Next, we configure Nginx_ to proxy Isso. Do not run Isso on a public interface!
 A popular but often error-prone (because of CORS_) setup to host Isso uses a
 dedicated domain such as ``comments.example.tld``.
 
-Assuming both, your website and Isso are on the same server, the nginx
+Isso's API consists of two important parts:
+The actual API for dealing with comments and ``/js/`` where it serves up the
+javascript files for embedding Isso comments into your website.
+
+Assuming both your website and Isso are on the same server, the nginx
 configuration looks like this:
 
 .. code-block:: nginx
@@ -128,9 +132,17 @@ Now, you embed Isso to your website:
             src="//comments.example.tld/js/embed.min.js"></script>
 
     <section id="isso-thread"></section>
+    
+``Embed.min.js`` is one of the four JavaScript files that Isso serves. It also 
+provides ``embed.dev.js`` and a minified and a development version of ``count.js``
+which is described more under :doc:`extras/advanced-integration`.
 
 Note, that `data-isso` is optional, but when a website includes a script using
 ``async`` it is no longer possible to determine the script's external URL.
+
+Data-isso is used when Isso is on a different URL as your regular website.
+If you proxy your issue to ``//example.tld/comments/`` instead, you should leave
+data-isso off, and just set src accordingly.
 
 That's it. When you open your website, you should see a commenting form. Leave
 a comment to see if the setup works. If not, see :doc:`troubleshooting`.
